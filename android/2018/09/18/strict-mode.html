@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>严格模式 | 曹建峰的博客</title>
+<meta name="generator" content="Jekyll v3.8.3" />
+<meta property="og:title" content="严格模式" />
+<meta property="og:locale" content="zh" />
+<meta name="description" content="昔日凭借单元测试，严格模式，崩溃日志分析三大法宝， 我同其他同事，一起把360手机卫士的错误率，降到了万分之三以下。 时至今日仍然未见到比较好的，使用StrictMode的代码工具类或者教程， 今天拿出来分享一下，给有志提高代码质量的猿。" />
+<meta property="og:description" content="昔日凭借单元测试，严格模式，崩溃日志分析三大法宝， 我同其他同事，一起把360手机卫士的错误率，降到了万分之三以下。 时至今日仍然未见到比较好的，使用StrictMode的代码工具类或者教程， 今天拿出来分享一下，给有志提高代码质量的猿。" />
+<link rel="canonical" href="http://0.0.0.0:4000/android/2018/09/18/strict-mode.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/android/2018/09/18/strict-mode.html" />
+<meta property="og:site_name" content="曹建峰的博客" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-09-18T07:33:54+00:00" />
+<script type="application/ld+json">
+{"url":"http://0.0.0.0:4000/android/2018/09/18/strict-mode.html","headline":"严格模式","dateModified":"2018-09-18T07:33:54+00:00","datePublished":"2018-09-18T07:33:54+00:00","description":"昔日凭借单元测试，严格模式，崩溃日志分析三大法宝， 我同其他同事，一起把360手机卫士的错误率，降到了万分之三以下。 时至今日仍然未见到比较好的，使用StrictMode的代码工具类或者教程， 今天拿出来分享一下，给有志提高代码质量的猿。","mainEntityOfPage":{"@type":"WebPage","@id":"http://0.0.0.0:4000/android/2018/09/18/strict-mode.html"},"@type":"BlogPosting","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/feed.xml" title="曹建峰的博客" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">曹建峰的博客</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">严格模式</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2018-09-18T07:33:54+00:00" itemprop="datePublished">Sep 18, 2018
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>昔日凭借<strong>单元测试，严格模式，崩溃日志分析</strong>三大法宝，
+我同其他同事，一起把360手机卫士的错误率，降到了万分之三以下。
+时至今日仍然未见到比较好的，使用StrictMode的代码工具类或者教程，
+今天拿出来分享一下，给有志提高代码质量的猿。</p>
+
+<p>###为什么需要严格模式</p>
+
+<p>有些问题不能被立刻发现，容易造成很多莫名其妙的现象。</p>
+
+<p>或者短期没有异常现象，影响到了长期的稳定。</p>
+
+<p>例如：内测泄露，文件资源不释放，数据库不关闭等。</p>
+
+<p>为了能够即时发现这些错误，安卓引入了严格模式这个概念。</p>
+
+<h3 id="严格模式的含义">严格模式的含义</h3>
+<p>严格模式是一个开关，开启之后一些严格检查的代码会生效。
+检查到问题后会主动崩溃报错。</p>
+
+<h4 id="严格模式的精神">严格模式的精神</h4>
+
+<p>尽快暴露错误，而不是隐藏和绕过错误。</p>
+
+<p>####严格模式有两个特点：</p>
+
+<ol>
+  <li>什么时候出错，什么时候就会报错；</li>
+  <li>哪里出错，就会在哪里报错。</li>
+</ol>
+
+<h3 id="怎样开启">怎样开启</h3>
+
+<p>严格模式是默认关闭等，这样用户体验是稳定的，不受影响。</p>
+
+<p>测试过程中，通过开关软件开启严格模式，这样能发现更多问题。</p>
+
+<p>工具类</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">ovo</span><span class="p">.</span><span class="n">top</span><span class="p">.</span><span class="n">app</span><span class="p">;</span>
+
+<span class="n">import</span> <span class="n">android</span><span class="p">.</span><span class="n">os</span><span class="p">.</span><span class="n">Build</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">android</span><span class="p">.</span><span class="n">os</span><span class="p">.</span><span class="n">Environment</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">android</span><span class="p">.</span><span class="n">os</span><span class="p">.</span><span class="n">StrictMode</span><span class="p">;</span>
+<span class="n">import</span> <span class="n">android</span><span class="p">.</span><span class="n">util</span><span class="p">.</span><span class="n">Log</span><span class="p">;</span>
+
+<span class="n">import</span> <span class="n">java</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">File</span><span class="p">;</span>
+
+<span class="p">/**</span>
+ <span class="p">*</span> <span class="err">参考</span><span class="n">http</span><span class="p">://</span><span class="n">www</span><span class="p">.</span><span class="n">jianshu</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">p</span><span class="p">/</span><span class="m">98f348f</span><span class="n">c7688</span>
+ <span class="p">*</span> <span class="n">Created</span> <span class="n">by</span> <span class="err">曹建峰</span><span class="p">(</span><span class="n">windcao</span><span class="p">@</span><span class="n">hotmail</span><span class="p">.</span><span class="n">com</span><span class="p">)</span> <span class="n">on</span> <span class="m">2017</span><span class="p">/</span><span class="m">2</span><span class="p">/</span><span class="m">22.</span>
+ <span class="p">*</span> <span class="err">单独控制</span><span class="n">activity</span><span class="err">开关</span>
+ <span class="p">*/</span>
+<span class="k">public</span> <span class="n">class</span> <span class="n">StrictModeManager</span> <span class="p">{</span>
+    <span class="n">private</span> <span class="n">static</span> <span class="n">final</span> <span class="k">String</span> <span class="n">STRICT_MODE_CFG</span> <span class="p">=</span> <span class="s2">"ovo.top.stictmode.cfg/enable"</span><span class="p">;</span>
+    <span class="n">private</span> <span class="n">static</span> <span class="n">final</span> <span class="k">String</span> <span class="n">ACTIVITY_LEAKS_DETECT_CFG</span> <span class="p">=</span> <span class="s2">"ovo.top.stictmode.cfg/enable/activity_leaks_detect"</span><span class="p">;</span>
+    <span class="n">private</span> <span class="n">static</span> <span class="n">final</span> <span class="k">boolean</span> <span class="n">DEBUG</span> <span class="p">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="n">private</span> <span class="n">static</span> <span class="k">boolean</span> <span class="n">sIsInStrictMode</span> <span class="p">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="n">private</span> <span class="n">static</span> <span class="k">boolean</span> <span class="n">sEnableActivityLeaksDetect</span> <span class="p">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="n">private</span> <span class="n">static</span> <span class="k">boolean</span> <span class="n">sIsFlgChecked</span> <span class="p">=</span> <span class="nb">false</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">checkStrictModeCfg</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sIsInStrictMode</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">StrictMode</span><span class="p">.</span><span class="n">VmPolicy</span><span class="p">.</span><span class="n">Builder</span> <span class="n">builder</span> <span class="p">=</span> <span class="n">new</span> <span class="n">StrictMode</span><span class="p">.</span><span class="n">VmPolicy</span><span class="p">.</span><span class="n">Builder</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">sEnableActivityLeaksDetect</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">builder</span><span class="p">.</span><span class="n">detectAll</span><span class="p">();</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">Build</span><span class="p">.</span><span class="k">VERSION</span><span class="p">.</span><span class="n">SDK_INT</span> <span class="p">&gt;=</span> <span class="n">Build</span><span class="p">.</span><span class="n">VERSION_CODES</span><span class="p">.</span><span class="n">HONEYCOMB</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">builder</span><span class="p">.</span><span class="n">detectLeakedClosableObjects</span><span class="p">();</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">Build</span><span class="p">.</span><span class="k">VERSION</span><span class="p">.</span><span class="n">SDK_INT</span> <span class="p">&gt;=</span> <span class="n">Build</span><span class="p">.</span><span class="n">VERSION_CODES</span><span class="p">.</span><span class="n">JELLY_BEAN</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="n">builder</span><span class="p">.</span><span class="n">detectLeakedRegistrationObjects</span><span class="p">();</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">Build</span><span class="p">.</span><span class="k">VERSION</span><span class="p">.</span><span class="n">SDK_INT</span> <span class="p">&gt;=</span> <span class="n">Build</span><span class="p">.</span><span class="n">VERSION_CODES</span><span class="p">.</span><span class="n">JELLY_BEAN_MR2</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="n">builder</span><span class="p">.</span><span class="n">detectFileUriExposure</span><span class="p">();</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="n">builder</span><span class="p">.</span><span class="n">detectLeakedSqlLiteObjects</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="n">builder</span><span class="p">.</span><span class="n">penaltyLog</span><span class="p">().</span><span class="n">penaltyDropBox</span><span class="p">().</span><span class="n">penaltyDeath</span><span class="p">();</span>
+            <span class="n">StrictMode</span><span class="p">.</span><span class="n">setVmPolicy</span><span class="p">(</span><span class="n">builder</span><span class="p">.</span><span class="n">build</span><span class="p">());</span>
+
+            <span class="n">StrictMode</span><span class="p">.</span><span class="n">setThreadPolicy</span><span class="p">(</span><span class="n">new</span> <span class="n">StrictMode</span><span class="p">.</span><span class="n">ThreadPolicy</span><span class="p">.</span><span class="n">Builder</span><span class="p">()</span>
+                    <span class="p">.</span><span class="n">detectNetwork</span><span class="p">()</span>
+                    <span class="p">.</span><span class="n">penaltyLog</span><span class="p">()</span>
+                    <span class="p">.</span><span class="n">penaltyDropBox</span><span class="p">()</span>
+                    <span class="p">.</span><span class="n">penaltyDialog</span><span class="p">()</span>
+                    <span class="p">.</span><span class="n">build</span><span class="p">());</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="n">static</span> <span class="k">boolean</span> <span class="n">isInStrictMode</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">checkStrictModeCfg</span><span class="p">();</span>
+        <span class="n">return</span> <span class="n">sIsInStrictMode</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="p">/**</span>
+     <span class="p">*</span> <span class="err">有些情况下我们希望立刻发现错误，有任何异常都曝光出来，而不是带着错误继续执行。这样可以尽快发现错误。</span>
+     <span class="p">*</span> <span class="err">这种情况下将刚捕获的异常放到</span><span class="n">handleException</span><span class="err">就可以了。</span>
+     <span class="p">*</span> <span class="err">严格模式下，这些被处理的</span><span class="n">Exception</span> <span class="err">仍会立刻抛出。而非严格的模式下，会写日志。</span>
+     <span class="p">*</span> <span class="p">@</span><span class="n">param</span> <span class="n">e</span>
+     <span class="p">*</span> <span class="p">@</span><span class="n">param</span> <span class="n">msg</span>
+     <span class="p">*/</span>
+    <span class="k">public</span> <span class="n">static</span> <span class="n">void</span> <span class="n">handleException</span><span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">,</span> <span class="k">String</span> <span class="n">msg</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">isInStrictMode</span><span class="p">())</span> <span class="p">{</span>
+            <span class="n">throw</span> <span class="n">new</span> <span class="n">RuntimeException</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">e</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">DEBUG</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">Log</span><span class="p">.</span><span class="n">e</span><span class="p">(</span><span class="s2">"Exception"</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">e</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">private</span> <span class="n">static</span> <span class="n">void</span> <span class="n">checkStrictModeCfg</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sIsFlgChecked</span> <span class="p">==</span> <span class="nb">false</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">File</span> <span class="n">strictModeCfgFile</span> <span class="p">=</span> <span class="n">new</span> <span class="n">File</span><span class="p">(</span><span class="n">Environment</span><span class="p">.</span><span class="n">getExternalStorageDirectory</span><span class="p">(),</span> <span class="n">STRICT_MODE_CFG</span><span class="p">);</span>
+            <span class="n">sIsInStrictMode</span> <span class="p">=</span> <span class="n">strictModeCfgFile</span><span class="p">.</span><span class="nb">exists</span><span class="p">();</span>
+
+            <span class="n">File</span> <span class="n">activityLeaksCfgFile</span> <span class="p">=</span> <span class="n">new</span> <span class="n">File</span><span class="p">(</span><span class="n">Environment</span><span class="p">.</span><span class="n">getExternalStorageDirectory</span><span class="p">(),</span> <span class="n">ACTIVITY_LEAKS_DETECT_CFG</span><span class="p">);</span>
+            <span class="n">sEnableActivityLeaksDetect</span> <span class="p">=</span> <span class="n">activityLeaksCfgFile</span><span class="p">.</span><span class="nb">exists</span><span class="p">();</span>
+
+            <span class="n">sIsFlgChecked</span> <span class="p">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>使用方法：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>在Application的onCreate中添加一行代码
+  public void onCreate() {
+        StrictModeManager.init();
+        super.onCreate();
+ }
+</code></pre></div></div>
+<p>开启开关：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>caojianfeng$ adb shell mkdir /sdcard/ovo.top.stictmode.cfg/
+caojianfeng$ adb shell mkdir /sdcard/ovo.top.stictmode.cfg/enable
+caojianfeng$ adb shell mkdir /sdcard/ovo.top.stictmode.cfg/enable/activity_leaks_detect
+
+</code></pre></div></div>
+
+  </div><a class="u-url" href="/android/2018/09/18/strict-mode.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">曹建峰的博客</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">曹建峰的博客</li><li><a class="u-email" href="mailto:windcao@hotmail.com">windcao@hotmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/caojianfeng"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">caojianfeng</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
