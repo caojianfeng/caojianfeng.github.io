@@ -3,17 +3,17 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.5.0 -->
-<title>我的空间 | 曹建峰的博客</title>
+<title>显示jekyll源码 | 曹建峰的博客</title>
 <meta name="generator" content="Jekyll v3.8.4" />
-<meta property="og:title" content="我的空间" />
+<meta property="og:title" content="显示jekyll源码" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
 <meta property="og:description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description." />
-<link rel="canonical" href="http://0.0.0.0:4000/blog/" />
-<meta property="og:url" content="http://0.0.0.0:4000/blog/" />
+<link rel="canonical" href="http://0.0.0.0:4000/blog/jekyll/showing-jekyll-code/" />
+<meta property="og:url" content="http://0.0.0.0:4000/blog/jekyll/showing-jekyll-code/" />
 <meta property="og:site_name" content="曹建峰的博客" />
 <script type="application/ld+json">
-{"url":"http://0.0.0.0:4000/blog/","name":"曹建峰的博客","description":"Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","headline":"我的空间","@type":"WebSite","@context":"http://schema.org"}</script>
+{"url":"http://0.0.0.0:4000/blog/jekyll/showing-jekyll-code/","description":"Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.","headline":"显示jekyll源码","@type":"WebPage","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/main.css">
   <link rel="stylesheet" href="/blog/css/common.css"><link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/blog/feed.xml" title="曹建峰的博客" /></head>
@@ -231,7 +231,7 @@
         
 
             <a href="/blog/jekyll/showing-jekyll-code/ "
-               class="menu-item" >
+               class="menu-item-current" >
                [显示jekyll源码]
             </a>
 
@@ -264,59 +264,26 @@
 <hr />
 
 <br>
-<div class="home"><h1 class="page-heading">我的空间</h1>
+<h1 id="显示jekyll源码">显示jekyll源码</h1>
 
-  <h2>linux</h2>
-  <ul>
-    <li><a href="/blog//linux/2016/10/28/copy-file-from-remote-linux-server.html">懒人怎么从远程linux主机拷贝文件 --Oct 28, 2016</a></li>
-    <p>怎样能够快速的从服务器拷贝一个文件或者目录？</p>
+<p>把你的代码包在raw endraw 间就可以了</p>
 
-
-    
-  </ul>
-  
-  <h2>android</h2>
-  <ul>
-    <li><a href="/blog//android/2018/09/18/strict-mode.html">严格模式 --Sep 18, 2018</a></li>
-    <p>昔日凭借<strong>单元测试，严格模式，崩溃日志分析</strong>三大法宝，
-我同其他同事，一起把360手机卫士的错误率，降到了万分之三以下。
-时至今日仍然未见到比较好的，使用StrictMode的代码工具类或者教程，
-今天拿出来分享一下，给有志提高代码质量的猿。</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  {%- seo -%}
+  &lt;link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}"&gt;
+  {%- feed_meta -%}
+  {%- if jekyll.environment == 'production' and site.google_analytics -%}
+    {%- include google-analytics.html -%}
+  {%- endif -%}
+&lt;/head&gt;
 
 
-    <li><a href="/blog//android/2018/08/29/progress-keep.html">安卓进程保活专题 --Aug 29, 2018</a></li>
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>一直以来，app进程存活与手机流畅且省电就是一对矛盾。
-对于app厂商来说，存活就是机会，存活就是金钱。
-对于手机厂商来说来说，杀掉app就能流畅，就能省电，就能有好口碑，好销量。
 </code></pre></div></div>
 
-
-    
-  </ul>
-  
-
-<!---
-  <h2 class="post-list-heading">Posts</h2>
-    <ul class="post-list"><li><span class="post-meta">Sep 18, 2018</span>
-        <h3>
-          <a class="post-link" href="/blog/android/2018/09/18/strict-mode.html">
-            严格模式
-          </a>
-        </h3></li><li><span class="post-meta">Aug 29, 2018</span>
-        <h3>
-          <a class="post-link" href="/blog/android/2018/08/29/progress-keep.html">
-            安卓进程保活专题
-          </a>
-        </h3></li><li><span class="post-meta">Oct 28, 2016</span>
-        <h3>
-          <a class="post-link" href="/blog/linux/2016/10/28/copy-file-from-remote-linux-server.html">
-            懒人怎么从远程linux主机拷贝文件
-          </a>
-        </h3></li></ul>
-
-    <p class="rss-subscribe">subscribe <a href="/blog/feed.xml">via RSS</a></p>--->
-
-</div>
 
 </div>
 

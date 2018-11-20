@@ -1,0 +1,13 @@
+
+.menu-item {
+  background-color: #ffffff;
+}
+
+.menu-item-current {
+  background-color: #ddddff;
+}
+
+.menu-title {
+  width: 140px;
+  display:inline-block;
+}
