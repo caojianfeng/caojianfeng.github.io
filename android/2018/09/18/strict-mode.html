@@ -9,19 +9,19 @@
 <meta property="og:locale" content="zh" />
 <meta name="description" content="昔日凭借单元测试，严格模式，崩溃日志分析三大法宝， 我同其他同事，一起把360手机卫士的错误率，降到了万分之三以下。 时至今日仍然未见到比较好的，使用StrictMode的代码工具类或者教程， 今天拿出来分享一下，给有志提高代码质量的猿。" />
 <meta property="og:description" content="昔日凭借单元测试，严格模式，崩溃日志分析三大法宝， 我同其他同事，一起把360手机卫士的错误率，降到了万分之三以下。 时至今日仍然未见到比较好的，使用StrictMode的代码工具类或者教程， 今天拿出来分享一下，给有志提高代码质量的猿。" />
-<link rel="canonical" href="http://0.0.0.0:4000/blog/android/2018/09/18/strict-mode.html" />
-<meta property="og:url" content="http://0.0.0.0:4000/blog/android/2018/09/18/strict-mode.html" />
+<link rel="canonical" href="http://0.0.0.0:4000/android/2018/09/18/strict-mode.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/android/2018/09/18/strict-mode.html" />
 <meta property="og:site_name" content="曹建峰的博客" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2018-09-18T07:33:54+00:00" />
 <script type="application/ld+json">
-{"datePublished":"2018-09-18T07:33:54+00:00","dateModified":"2018-09-18T07:33:54+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://0.0.0.0:4000/blog/android/2018/09/18/strict-mode.html"},"url":"http://0.0.0.0:4000/blog/android/2018/09/18/strict-mode.html","description":"昔日凭借单元测试，严格模式，崩溃日志分析三大法宝， 我同其他同事，一起把360手机卫士的错误率，降到了万分之三以下。 时至今日仍然未见到比较好的，使用StrictMode的代码工具类或者教程， 今天拿出来分享一下，给有志提高代码质量的猿。","headline":"严格模式","@type":"BlogPosting","@context":"http://schema.org"}</script>
+{"datePublished":"2018-09-18T07:33:54+00:00","dateModified":"2018-09-18T07:33:54+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://0.0.0.0:4000/android/2018/09/18/strict-mode.html"},"url":"http://0.0.0.0:4000/android/2018/09/18/strict-mode.html","description":"昔日凭借单元测试，严格模式，崩溃日志分析三大法宝， 我同其他同事，一起把360手机卫士的错误率，降到了万分之三以下。 时至今日仍然未见到比较好的，使用StrictMode的代码工具类或者教程， 今天拿出来分享一下，给有志提高代码质量的猿。","headline":"严格模式","@type":"BlogPosting","@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/blog/assets/main.css">
-  <link rel="stylesheet" href="/blog/css/common.css"><link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/blog/feed.xml" title="曹建峰的博客" /></head>
+<link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="/css/common.css"><link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/feed.xml" title="曹建峰的博客" /></head>
 <body><header class="site-header" role="banner">
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">曹建峰的博客</a><nav class="site-nav">
+  <div class="wrapper"><a class="site-title" rel="author" href="/">曹建峰的博客</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
         <label for="nav-trigger">
           <span class="menu-icon">
@@ -31,7 +31,7 @@
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/blog/about/">about me</a></div>
+        <div class="trigger"><a class="page-link" href="/about/">about me</a></div>
       </nav></div>
 </header>
 <main class="page-content" aria-label="Content">
@@ -185,12 +185,12 @@ caojianfeng$ adb shell mkdir /sdcard/ovo.top.stictmode.cfg/enable/activity_leaks
 
 </code></pre></div></div>
 
-  </div><a class="u-url" href="/blog/android/2018/09/18/strict-mode.html" hidden></a>
+  </div><a class="u-url" href="/android/2018/09/18/strict-mode.html" hidden></a>
 </article>
 
       </div>
     </main><footer class="site-footer h-card">
-  <data class="u-url" href="/blog/"></data>
+  <data class="u-url" href="/"></data>
 
   <div class="wrapper">
 
@@ -202,7 +202,7 @@ caojianfeng$ adb shell mkdir /sdcard/ovo.top.stictmode.cfg/enable/activity_leaks
           <li class="p-name">曹建峰的博客</li><li><a class="u-email" href="mailto:windcao@hotmail.com">windcao@hotmail.com</a></li></ul>
       </div>
 
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/caojianfeng"><svg class="svg-icon"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg> <span class="username">caojianfeng</span></a></li></ul>
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/caojianfeng"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">caojianfeng</span></a></li></ul>
 </div>
 
       <div class="footer-col footer-col-3">
