@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>安卓进程保活专题 | JeffreyCao</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="123一直以来，app进程存活与手机流畅且省电就是一对矛盾。对于app厂商来说，存活就是机会，存活就是金钱。对于手机厂商来说来说，杀掉app就能流畅，就能省电，就能有好口碑，好销量。  进程保活专题微信Anidroid客户端后台保活经验分享 关于 Android 进程保活，你所需要知道的一切 google的GCM推送使用简介 Android进程保活的一般套路 如何让Android service进">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安卓进程保活专题">
+<meta property="og:url" content="http://caojianfeng.com/2018/08/29/progress-keep/index.html">
+<meta property="og:site_name" content="JeffreyCao">
+<meta property="og:description" content="123一直以来，app进程存活与手机流畅且省电就是一对矛盾。对于app厂商来说，存活就是机会，存活就是金钱。对于手机厂商来说来说，杀掉app就能流畅，就能省电，就能有好口碑，好销量。  进程保活专题微信Anidroid客户端后台保活经验分享 关于 Android 进程保活，你所需要知道的一切 google的GCM推送使用简介 Android进程保活的一般套路 如何让Android service进">
+<meta property="og:locale" content="zh">
+<meta property="article:published_time" content="2018-08-28T19:33:01.000Z">
+<meta property="article:modified_time" content="2020-01-11T05:42:00.795Z">
+<meta property="article:author" content="Jeffrey Cao">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="JeffreyCao" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">JeffreyCao</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">Tech Bridge</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://caojianfeng.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-progress-keep" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/08/29/progress-keep/" class="article-date">
+  <time datetime="2018-08-28T19:33:01.000Z" itemprop="datePublished">2018-08-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/android/">android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      安卓进程保活专题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">一直以来，app进程存活与手机流畅且省电就是一对矛盾。</span><br><span class="line">对于app厂商来说，存活就是机会，存活就是金钱。</span><br><span class="line">对于手机厂商来说来说，杀掉app就能流畅，就能省电，就能有好口碑，好销量。</span><br></pre></td></tr></table></figure>
+
+<h1 id="进程保活专题"><a href="#进程保活专题" class="headerlink" title="进程保活专题"></a>进程保活专题</h1><p><a href="https://mp.weixin.qq.com/s?__biz=MzUxMzcxMzE5Ng==&mid=2247488488&idx=1&sn=f76fb0a8f88f6958d6a7ecfe6658b5a5&source=41" target="_blank" rel="noopener">微信Anidroid客户端后台保活经验分享</a></p>
+<p><a href="https://www.jianshu.com/p/63aafe3c12af" target="_blank" rel="noopener">关于 Android 进程保活，你所需要知道的一切</a></p>
+<p><a href="https://blog.csdn.net/newhope1106/article/details/" target="_blank" rel="noopener">google的GCM推送使用简介</a></p>
+<p><a href="https://blog.csdn.net/u013263323/article/details/56285475" target="_blank" rel="noopener">Android进程保活的一般套路</a></p>
+<p><a href="https://blog.csdn.net/north1989/article/details/52069401" target="_blank" rel="noopener">如何让Android service进程变成前台进程</a></p>
+<p><a href="https://blog.csdn.net/wangbf_java/article/details/72815820" target="_blank" rel="noopener">Android 进程保活资料汇总与华为白名单那些事</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://caojianfeng.com/2018/08/29/progress-keep/" data-id="ck595xsbo0005ognk7c73exte" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/09/18/strict-mode/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          严格模式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/10/28/copy-file-from-remote-linux-server/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">懒人怎么从远程linux主机拷贝文件</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/android/">android</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/react-native/">react-native</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">September 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/01/12/flutter-component-developing/">flutter component developing</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/11/marks-for-table/">marks for table</a>
+          </li>
+        
+          <li>
+            <a href="/2020/01/11/react-native-component-developing/">react-native component developing</a>
+          </li>
+        
+          <li>
+            <a href="/2018/09/18/strict-mode/">严格模式</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/29/progress-keep/">安卓进程保活专题</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Jeffrey Cao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
